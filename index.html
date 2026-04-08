@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zack Tran — Human-Centered Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --text: #1a1916;
+      --muted: #6b6860;
+      --faint: #b0ada6;
+      --border: #e2dfd8;
+      --accent: #2d5a3d;
+      --accent-light: #eaf2ec;
+      --accent-text: #1e3d2a;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,245,240,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-size: 13px; font-weight: 500;
+      background: var(--text);
+      color: var(--bg) !important;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: opacity 0.15s !important;
+    }
+    .nav-cta:hover { opacity: 0.8; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 100px 48px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 400;
+      color: var(--accent-text);
+      background: var(--accent-light);
+      border: 1px solid #c5ddc9;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      max-width: 720px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-size: 14px; font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+    .btn-dark {
+      background: var(--text);
+      color: var(--bg);
+      border: 1px solid var(--text);
+    }
+    .btn-dark:hover { opacity: 0.82; }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { background: var(--surface); border-color: #c8c5be; }
+
+    /* ── SECTION WRAPPER ── */
+    .section-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+    .section-wrap + .section-wrap {
+      border-top: 1px solid var(--border);
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 40px;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: #c8c5be;
+    }
+    .project-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+    }
+    .card-visual {
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px;
+      flex-shrink: 0;
+    }
+    .card-visual.square { height: 220px; }
+    .card-visual.tall { width: 340px; min-height: 260px; }
+    .card-body { padding: 28px 30px 30px; display: flex; flex-direction: column; }
+    .card-meta {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .tag {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .tag.green {
+      background: var(--accent-light);
+      color: var(--accent-text);
+      border-color: #c5ddc9;
+    }
+    .card-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .card-footer-label { font-size: 13px; color: var(--muted); }
+    .card-arrow {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      color: var(--text);
+      transition: background 0.15s;
+    }
+    .project-card:hover .card-arrow { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .about-text {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .about-text strong { color: var(--text); font-weight: 500; }
+    .about-text p + p { margin-top: 16px; }
+
+    .timeline { display: flex; flex-direction: column; }
+    .tl-row {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 16px;
+      padding: 18px 0;
+      border-top: 1px solid var(--border);
+    }
+    .tl-row:last-child { border-bottom: 1px solid var(--border); }
+    .tl-year { font-size: 12px; color: var(--faint); padding-top: 3px; font-variant-numeric: tabular-nums; }
+    .tl-place { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+    .tl-detail { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+    .skill-icon { font-size: 22px; margin-bottom: 12px; }
+    .skill-name { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+    .skill-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* ── CONTACT ── */
+    .contact-wrap {
+      background: var(--text);
+      border-radius: 20px;
+      padding: 56px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .contact-wrap h2 {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--bg);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .contact-wrap p { font-size: 15px; color: #a09d96; max-width: 360px; line-height: 1.65; font-weight: 300; }
+    .contact-btns { display: flex; flex-direction: column; gap: 10px; min-width: 170px; }
+    .contact-btn {
+      display: block;
+      font-size: 13px; font-weight: 500;
+      padding: 11px 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: var(--bg);
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .contact-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer span { font-size: 13px; color: var(--faint); }
+
+    /* ── FADE IN ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero > * {
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero > *:nth-child(1) { animation-delay: 0.05s; }
+    .hero > *:nth-child(2) { animation-delay: 0.15s; }
+    .hero > *:nth-child(3) { animation-delay: 0.25s; }
+    .hero > *:nth-child(4) { animation-delay: 0.35s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { padding: 64px 20px 56px; }
+      .section-wrap { padding: 48px 20px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured { flex-direction: column; }
+      .card-visual.tall { width: 100%; height: 200px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .contact-wrap { flex-direction: column; padding: 40px 28px; text-align: center; }
+      .contact-wrap p { max-width: 100%; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Zack Tran</a>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="btn nav-cta">Say hello →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Open to opportunities · Dearborn, MI</div>
+  <h1>Design-focused student<br>who solves <em>with empathy.</em></h1>
+  <p class="hero-sub">Human-Centered Engineering Design student at UMich–Dearborn. I build experiences that connect emotionally — driven by curiosity, collaboration, and a process-first mindset.</p>
+  <div class="hero-actions">
+    <a href="#work" class="btn btn-dark">View my work</a>
+    <a href="#contact" class="btn btn-outline">Get in touch →</a>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="section-wrap" id="work">
+  <div class="section-label">Selected work</div>
+  <div class="projects-grid">
+
+    <!-- E100 Rover — Featured -->
+    <a class="project-card featured" href="#rover">
+      <div class="card-visual tall" style="background: #eef4ef;">🚗</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag green">Engineering Design</span>
+          <span class="tag">2024</span>
+        </div>
+        <div class="card-title">E100 Rover Project</div>
+        <div class="card-desc">
+          A student-led engineering design project focused on building and iterating a compact electric rover.
+          The project integrated human-centered principles into mechanical and systems design — balancing
+          performance constraints with intuitive control and safety for operators. My role spanned ideation,
+          prototyping, and iterative testing phases, applying design thinking at every stage of the engineering process.
+        </div>
+        <div class="card-footer">
+          <span class="card-footer-label">Engineering Design · Systems Thinking</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Fall Risks -->
+    <a class="project-card" href="#fallrisk">
+      <div class="card-visual square" style="background: #f0f4f8; font-size: 48px;">🧍</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag green">Health Design</span>
+          <span class="tag">UX Research</span>
+        </div>
+        <div class="card-title">Reducing Fall Risks for Older Adults</div>
+        <div class="card-desc">
+          An ergonomic design study focused on load-transfer mechanics and balance for aging populations.
+          Research involved literature review, user interviews with older adults, and prototype evaluation of
+          assistive load-bearing devices. The outcome informed design principles for everyday products
+          that reduce fall frequency through smarter ergonomic positioning.
+        </div>
+        <div class="card-footer">
+          <span class="card-footer-label">Ergonomics · Elderly Care</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Mind Mooder -->
+    <a class="project-card" href="#mindmooder">
+      <div class="card-visual square" style="background: #f4f0f8; font-size: 48px;">🧠</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag green">Mental Health</span>
+          <span class="tag">Prototype</span>
+        </div>
+        <div class="card-title">Mind Mooder Prototype</div>
+        <div class="card-desc">
+          An emotional wellness tracking app designed to help users reflect on and regulate daily moods.
+          The prototype was developed through a human-centered process — starting with empathy mapping,
+          followed by low-fidelity wireframes, usability testing, and iteration. The final design
+          prioritizes low-friction daily check-ins, mood pattern visualization, and gentle nudges
+          toward healthier emotional habits.
+        </div>
+        <div class="card-footer">
+          <span class="card-footer-label">App Design · Emotional Wellness</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Pill Pro — Featured bottom -->
+    <a class="project-card featured" href="#pillpro" style="flex-direction: row-reverse;">
+      <div class="card-visual tall" style="background: #f0f8f4; font-size: 56px;">💊</div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag green">Health UX</span>
+          <span class="tag">HCED 450</span>
+        </div>
+        <div class="card-title">Pill Pro</div>
+        <div class="card-desc">
+          A medication management concept developed as part of HCED 450. The goal was to reduce
+          medication errors through intuitive interface design, smart reminders, and clear visual hierarchy.
+          User research revealed that elderly and chronically ill patients struggled most with complex
+          pill schedules — so the solution centered on a simplified daily view, confirmation flows,
+          and caregiver sharing features. The project involved journey mapping, competitive analysis,
+          wireframing, and a high-fidelity Figma prototype.
+        </div>
+        <div class="card-footer">
+          <span class="card-footer-label">UX Design · Healthcare · Figma</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="section-wrap" id="about">
+  <div class="section-label">About me</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm Zack — a <strong>Human-Centered Engineering Design</strong> student at the University of Michigan–Dearborn with a passion for designing products that feel right to the people who use them.</p>
+      <p>I grew up in Ho Chi Minh City, Vietnam, moved to Michigan during high school, and volunteered with <strong>Loaves &amp; Fishes</strong> in Taylor before starting university. Those experiences shaped how I see design — not as aesthetics, but as care made tangible.</p>
+      <p>My process is rooted in <strong>empathy, curiosity, and honest iteration</strong>. I care about the real person sitting on the other side of every interface, product, or system I work on.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-year">2003–2018</div>
+        <div>
+          <div class="tl-place">Ho Chi Minh City, Vietnam</div>
+          <div class="tl-detail">Born and raised. Developed curiosity and a love for making things.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">2018–2019</div>
+        <div>
+          <div class="tl-place">Rockford, Michigan</div>
+          <div class="tl-detail">Sophomore year at Rockford High School. First experience adapting to a new culture.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">2019–2021</div>
+        <div>
+          <div class="tl-place">Allen Park, Michigan</div>
+          <div class="tl-detail">Graduated from Cabrini High School. Volunteered at Loaves &amp; Fishes in Taylor.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year">2021–2025</div>
+        <div>
+          <div class="tl-place">University of Michigan–Dearborn</div>
+          <div class="tl-detail">Pursuing a BS in Human-Centered Engineering Design. Expected graduation 2025.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section-wrap">
+  <div class="section-label">Skills &amp; methods</div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🔍</div>
+      <div class="skill-name">UX Research</div>
+      <div class="skill-desc">User interviews, usability testing, affinity mapping, journey mapping</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">✏️</div>
+      <div class="skill-name">Prototyping</div>
+      <div class="skill-desc">Figma, wireframing, low- and high-fidelity mockups, rapid iteration</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">♿</div>
+      <div class="skill-name">Accessibility</div>
+      <div class="skill-desc">Inclusive design principles, WCAG guidelines, designing for diverse users</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🔧</div>
+      <div class="skill-name">Engineering Design</div>
+      <div class="skill-desc">Systems thinking, mechanical prototyping, constraint-based design</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤝</div>
+      <div class="skill-name">Collaboration</div>
+      <div class="skill-desc">Cross-functional teamwork, stakeholder communication, design critique</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🌱</div>
+      <div class="skill-name">Empathy-led Design</div>
+      <div class="skill-desc">Human-centered process, emotional design, context-aware solutions</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section-wrap" id="contact">
+  <div class="contact-wrap">
+    <div>
+      <h2>Want to connect?</h2>
+      <p>I'm open to internships, design collaborations, and conversations about human-centered work. Feel free to reach out anytime.</p>
+    </div>
+    <div class="contact-btns">
+      <a class="contact-btn" href="https://www.linkedin.com/in/truc-zack-tran-03b777146/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="contact-btn" href="https://www.instagram.com/bobamochi2620/" target="_blank" rel="noopener">Instagram ↗</a>
+      <a class="contact-btn" href="https://cdn.prod.website-files.com/63529fbbef305a20fade3097/643d4e346d8d200b5737f950_Zack%20Resume%20(4)_Page_1.png" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Zack Tran</span>
+  <span>Human-Centered Engineering Design · UMich–Dearborn</span>
+</footer>
+
+</body>
+</html>
